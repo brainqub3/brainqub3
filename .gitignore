@@ -51,7 +51,7 @@ Desktop.ini
 # --------------------------------------------
 # Claude Code local settings (contains secrets)
 # --------------------------------------------
-# .mcp.json
+.mcp.json
 
 # --------------------------------------------
 # Editor files

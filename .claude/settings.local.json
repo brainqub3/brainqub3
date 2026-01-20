@@ -7,7 +7,8 @@
       "Read(./.env.example)",
       "mcp__context7__resolve-library-id",
       "mcp__context7__query-docs",
-      "Bash(sqlite3:*)"
+      "Bash(sqlite3:*)",
+      "Bash(git update-index:*)"
     ],
     "deny": [
       "Read(./.env)",
