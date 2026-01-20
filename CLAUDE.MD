@@ -13,7 +13,6 @@ You MUST prioritise:
 ### Read/write policy
 - READ ONLY (never edit):
   - raw/** (all raw data)
-  - canon/** (normalised copies that can be regenerated)
 - READ/WRITE (safe to edit):
   - ME.MD
   - BUSINESS.MD
@@ -22,24 +21,36 @@ You MUST prioritise:
 
 ### What lives where
 - raw/        : append-only dumps from Gmail, CRM, LinkedIn, YouTube, Calendar
-- canon/      : normalised Markdown for retrieval (YAML front matter + clean sections)
+- raw/crm/crm.db : SQLite database for CRM leads (sole writer: crm-lead-retriever agent)
 - kb/         : the actual "second brain" (customer graph, insights, playbooks)
 - state/      : manifest, rlm scopes, checkpoints and caches
 - agents/     : sub-agent prompts
 
+### CRM Database
+The CRM data is stored in a SQLite database at `raw/crm/crm.db`:
+- **leads** table: current state of all leads from Zoho CRM
+- **leads_history** table: full audit trail of all changes (insert/update/delete)
+- **sync_log** table: metadata for each sync operation
+- Schema defined in: `scripts/crm/db_schema.sql`
+- **Sole writer**: crm-lead-retriever agent (never edit this database directly)
+
 ## Tools and sub-agents
 
 You have access to:
-- /rlm search module for long-context retrieval over local files
+- /rlm skill for long-context retrieval over local files (use for meetings, CRM, kb, etc.)
+- /kb-update skill for writing to the knowledge base (use when persisting durable knowledge)
+- rlm-subcall sub-agent for extracting relevant info from long contexts
 - Sub-agents:
-  - Meeting research agent: agents/meeting-research.md
   - External research agent: agents/external-research.md
   - **Calendar fetch agent: agents/calendar-fetch.md** (MANDATORY for all calendar fetches)
+  - **CRM lead retriever agent: crm-lead-retriever** (use to fetch/sync leads from external CRM)
 
 Use sub-agents when:
-- the user asks about meetings, follow-ups, patterns across calls, or "what did we say"
 - the user asks about current events, market updates, competitors, pricing, or anything requiring freshness
 - **the user asks to fetch, sync, or update calendar data** → ALWAYS use the calendar-fetch agent
+- **the user asks to fetch, sync, or import leads from CRM** → use the crm-lead-retriever agent
+
+For meeting recall, follow-ups, patterns across calls, or relationship context, use /rlm directly with the appropriate scope (meetings, crm, kb).
 
 ## Default query workflow
 
@@ -65,14 +76,13 @@ For every user query:
      a) the user explicitly asked you to store/update something, OR
      b) you discovered stable, reusable knowledge (customer insight, updated offering, recurring pattern)
    - Write to kb/**, ME.MD, or BUSINESS.MD only
-   - Never edit raw/** or canon/**
+   - Never edit raw/**
 
 ## Retrieval rules (RLM)
 
 Prefer this order:
 1) kb/** for curated truth and decisions
-2) canon/** for normalised factual record
-3) raw/** only when canon is missing or incomplete
+2) raw/** for source data
 
 Use the scope mapping in state/rlm-scopes.yaml.
 If the scope config is missing or outdated, you may infer scopes from the folder structure and then update state/rlm-scopes.yaml.

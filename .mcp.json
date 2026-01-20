@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "zoho-crm": {
+      "type": "http",
+      "url": "your-zoho-mcp-url"
+    }
+  }
+}
