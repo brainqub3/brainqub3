@@ -1,0 +1,58 @@
+# ============================================
+# Brainqub3 Second Brain - Open Source Framework
+# ============================================
+# This repo shares the framework structure only.
+# All personal/business data is gitignored.
+
+# --------------------------------------------
+# Sensitive data files (personal/business)
+# --------------------------------------------
+ME.MD
+BUSINESS.MD
+
+# Environment files (keep .env.example)
+.env
+.env.*
+!.env.example
+
+# OAuth tokens (sensitive)
+scripts/ingest/token.json
+
+# --------------------------------------------
+# Data directories (contain sensitive data)
+# --------------------------------------------
+# Canon - normalised data
+canon/**
+!canon/**/
+!canon/**/.gitkeep
+
+# KB - knowledge base
+kb/**
+!kb/**/
+!kb/**/.gitkeep
+
+# State - machine state and caches
+state/**
+!state/**/
+!state/**/.gitkeep
+
+# Raw - source data (keep structure only)
+raw/**
+!raw/**/
+!raw/**/.gitkeep
+
+# --------------------------------------------
+# OS files
+# --------------------------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --------------------------------------------
+# Editor files
+# --------------------------------------------
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
