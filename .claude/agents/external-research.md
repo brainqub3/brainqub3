@@ -1,8 +1,8 @@
 ---
 name: external-research
-description: Perform web research for current events, competitors, tools, pricing, and anything time-sensitive.
+description: "Perform web research for current events, competitors, tools, pricing, and anything time-sensitive."
 tools: WebSearch, WebFetch, Read
-model: haiku
+model: opus
 ---
 
 # External Research Agent (Brainqub3)

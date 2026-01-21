@@ -53,25 +53,33 @@ brainqub3/
 ├── CLAUDE.MD           # Agent instructions and orchestration rules
 ├── ME.MD               # Personal context (edit this first)
 ├── BUSINESS.MD         # Business offerings (edit this first)
-├── agents/             # Sub-agent prompts
+├── agents/             # Sub-agent prompts (external-research, meeting-research, etc.)
 ├── raw/                # Immutable source data (append-only, never edit)
-│   ├── calendars/      # Calendar exports
-│   ├── crm/            # CRM database and exports
-│   ├── gmail/          # Email data
-│   ├── linkedin/       # LinkedIn exports
-│   └── youtube/        # YouTube analytics
+│   ├── calendars/      # Calendar exports (gcal/)
+│   ├── crm/            # CRM data (customers/, leads/, crm.db)
+│   ├── gmail/          # Email data (inbound/, meeting-summaries/)
+│   ├── linkedin/       # LinkedIn exports (archive/)
+│   ├── meetings/       # Meeting notes from Gemini summaries
+│   └── youtube/        # YouTube data (analytics/, comments/)
 ├── kb/                 # Knowledge base (agent-writable)
 │   ├── customers/      # Customer profiles and insights
+│   ├── people/         # Individual contact profiles
+│   ├── orgs/           # Organisation profiles
+│   ├── offers/         # Offering definitions
 │   ├── insights/       # Patterns and observations
 │   ├── playbooks/      # Repeatable processes
 │   └── decisions/      # Key decisions with rationale
-├── state/              # Machine state (caches, checkpoints)
-├── scripts/            # Utility scripts and APIs
-│   ├── ingest/         # Data ingestion scripts
-│   └── crm/            # CRM database schema
+├── state/              # Machine state
+│   ├── cache/          # Query and retrieval caches
+│   └── checkpoints/    # Processing checkpoints
+├── scripts/            # Utility scripts
+│   ├── ingest/         # Data ingestion (gcal_fetch.py, etc.)
+│   ├── crm/            # CRM database schema
+│   ├── normalise/      # Data normalisation scripts
+│   └── maintenance/    # Maintenance utilities
 └── .claude/            # Claude Code configuration
-    ├── agents/         # Agent definitions
-    └── skills/         # Skill definitions (rlm, kb-update)
+    ├── agents/         # Built-in agent definitions (rlm-subcall, crm-lead-retriever)
+    └── skills/         # Skill definitions (rlm/, kb-update/, crm-sync/)
 ```
 
 ### Key Concepts
@@ -123,9 +131,10 @@ The system includes specialised sub-agents for different tasks:
 
 | Agent | File | Purpose |
 |-------|------|---------|
+| Meeting Research | `agents/meeting-research.md` | Recalls meeting context, follow-ups, relationship history |
 | External Research | `agents/external-research.md` | Web research for current events, competitors, pricing |
 | Calendar Fetch | `agents/calendar-fetch.md` | Fetches Google Calendar events to `raw/calendars/` |
-| CRM Lead Retriever | (built-in) | Syncs leads from Zoho CRM to the local SQLite database |
+| CRM Lead Retriever | `.claude/agents/crm-lead-retriever.md` | Syncs leads from Zoho CRM to the local SQLite database |
 | RLM Subcall | `.claude/agents/rlm-subcall.md` | Extracts relevant info from large contexts |
 
 ---
