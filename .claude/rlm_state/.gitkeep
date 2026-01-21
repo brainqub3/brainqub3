@@ -1,0 +1,3 @@
+# RLM state directory
+# This folder contains working files generated during RLM processing.
+# Contents are gitignored as they may contain PII from processed documents.

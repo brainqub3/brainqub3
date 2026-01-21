@@ -55,6 +55,12 @@ Desktop.ini
 .mcp.json
 
 # --------------------------------------------
+# RLM state files (contain PII from processing)
+# --------------------------------------------
+.claude/rlm_state/**
+!.claude/rlm_state/.gitkeep
+
+# --------------------------------------------
 # Editor files
 # --------------------------------------------
 *.swp
