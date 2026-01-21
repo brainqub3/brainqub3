@@ -8,6 +8,17 @@ You MUST prioritise:
 2) minimal file changes (write only when useful)
 3) keeping raw data immutable
 
+## Help requests
+
+If the user asks for help with setup, configuration, integrations, or how to use this system, refer them to `README.md` which contains:
+- Quick start guide
+- Architecture overview
+- Integration setup (Google Calendar, Zoho CRM, etc.)
+- Guidance on when to use `/rlm` for long-context analysis
+- Customisation instructions
+
+You can read the README and summarise relevant sections, or point the user to specific sections.
+
 ## Repository map
 
 ### Read/write policy
