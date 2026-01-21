@@ -7,8 +7,9 @@
 # --------------------------------------------
 # Sensitive data files (personal/business)
 # --------------------------------------------
-ME.MD
-BUSINESS.MD
+# ME.MD and BUSINESS.MD are tracked as templates
+# Use: git update-index --skip-worktree ME.MD BUSINESS.MD
+# to keep your personal changes local
 
 # Environment files (keep .env.example)
 .env
