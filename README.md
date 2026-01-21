@@ -24,7 +24,7 @@ Claude has full context of this repository and can guide you through any changes
 ### 1. Clone and open in Claude Code
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/brainqub3/brainqub3.git
 cd brainqub3
 claude  # Opens Claude Code in this directory
 ```
