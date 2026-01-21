@@ -53,14 +53,23 @@ brainqub3/
 ├── CLAUDE.MD           # Agent instructions and orchestration rules
 ├── ME.MD               # Personal context (edit this first)
 ├── BUSINESS.MD         # Business offerings (edit this first)
-├── agents/             # Sub-agent prompts (external-research, meeting-research, etc.)
 ├── raw/                # Immutable source data (append-only, never edit)
-│   ├── calendars/      # Calendar exports (gcal/)
-│   ├── crm/            # CRM data (customers/, leads/, crm.db)
-│   ├── gmail/          # Email data (inbound/, meeting-summaries/)
-│   ├── linkedin/       # LinkedIn exports (archive/)
-│   ├── meetings/       # Meeting notes from Gemini summaries
-│   └── youtube/        # YouTube data (analytics/, comments/)
+│   ├── calendars/      # Calendar exports
+│   │   └── gcal/       # Google Calendar events
+│   ├── crm/            # CRM data
+│   │   ├── crm.db      # SQLite database (leads, history, sync log)
+│   │   ├── customers/  # Customer records
+│   │   └── leads/      # Lead records
+│   ├── gmail/          # Email data
+│   │   ├── inbound/    # Inbound emails
+│   │   └── meeting-summaries/
+│   ├── linkedin/       # LinkedIn exports
+│   │   ├── archive/    # Historical exports
+│   │   └── Connections.csv
+│   ├── meetings/       # Meeting notes from Gemini summaries (.txt files)
+│   └── youtube/        # YouTube data
+│       ├── analytics/
+│       └── comments/
 ├── kb/                 # Knowledge base (agent-writable)
 │   ├── customers/      # Customer profiles and insights
 │   ├── people/         # Individual contact profiles
@@ -68,18 +77,30 @@ brainqub3/
 │   ├── offers/         # Offering definitions
 │   ├── insights/       # Patterns and observations
 │   ├── playbooks/      # Repeatable processes
-│   └── decisions/      # Key decisions with rationale
+│   ├── decisions/      # Key decisions with rationale
+│   └── glossary.md     # Terms and definitions
 ├── state/              # Machine state
 │   ├── cache/          # Query and retrieval caches
-│   └── checkpoints/    # Processing checkpoints
+│   ├── checkpoints/    # Processing checkpoints
+│   ├── manifest.jsonl  # Processing manifest
+│   └── rlm-scopes.yaml # RLM scope definitions
 ├── scripts/            # Utility scripts
-│   ├── ingest/         # Data ingestion (gcal_fetch.py, etc.)
-│   ├── crm/            # CRM database schema
+│   ├── ingest/         # Data ingestion (gcal_fetch.py, requirements.txt)
+│   ├── crm/            # CRM database schema (db_schema.sql)
 │   ├── normalise/      # Data normalisation scripts
-│   └── maintenance/    # Maintenance utilities
+│   ├── maintenance/    # Maintenance utilities
+│   └── sync_zoho_leads.py  # Zoho CRM sync script
 └── .claude/            # Claude Code configuration
-    ├── agents/         # Built-in agent definitions (rlm-subcall, crm-lead-retriever)
-    └── skills/         # Skill definitions (rlm/, kb-update/, crm-sync/)
+    ├── agents/         # Sub-agent prompts
+    │   ├── calendar-fetch.md
+    │   ├── crm-lead-retriever.md
+    │   ├── external-research.md
+    │   └── rlm-subcall.md
+    ├── skills/         # Skill definitions
+    │   ├── crm-sync/
+    │   ├── kb-update/
+    │   └── rlm/
+    └── settings.local.json
 ```
 
 ### Key Concepts
@@ -131,10 +152,9 @@ The system includes specialised sub-agents for different tasks:
 
 | Agent | File | Purpose |
 |-------|------|---------|
-| Meeting Research | `agents/meeting-research.md` | Recalls meeting context, follow-ups, relationship history |
-| External Research | `agents/external-research.md` | Web research for current events, competitors, pricing |
-| Calendar Fetch | `agents/calendar-fetch.md` | Fetches Google Calendar events to `raw/calendars/` |
+| Calendar Fetch | `.claude/agents/calendar-fetch.md` | Fetches Google Calendar events to `raw/calendars/` |
 | CRM Lead Retriever | `.claude/agents/crm-lead-retriever.md` | Syncs leads from Zoho CRM to the local SQLite database |
+| External Research | `.claude/agents/external-research.md` | Web research for current events, competitors, pricing |
 | RLM Subcall | `.claude/agents/rlm-subcall.md` | Extracts relevant info from large contexts |
 
 ---
