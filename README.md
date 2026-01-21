@@ -140,6 +140,33 @@ Skills are reusable workflows invoked with `/command` syntax:
 | KB Update | `/kb-update` | Safely write and link knowledge to `kb/` |
 | CRM Sync | `/crm-sync` | Sync leads from Zoho CRM into local SQLite |
 
+### When to Use `/rlm` (Recursive Language Model)
+
+The RLM skill uses a chunked, iterative approach to process large contexts without "context rot" (degradation of quality as context grows). **It works best when explicitly invoked** for high-complexity tasks.
+
+**Use `/rlm` explicitly when:**
+
+- Processing **100+ documents** (e.g., all meeting notes, full email history)
+- Building or updating the **knowledge base** from raw data
+- Identifying **patterns across many sources** (e.g., recurring customer objections)
+- Performing **deep analysis** that requires iterative refinement
+- Working with contexts that exceed comfortable single-pass processing
+
+**You don't need `/rlm` for:**
+
+- Simple lookups in a few files
+- Questions about recent meetings (1-5 files)
+- Quick CRM queries
+- Single-document analysis
+
+**Example usage:**
+
+```
+/rlm context=raw/meetings query="Identify all partnership opportunities discussed across meetings and who proposed them"
+```
+
+For shorter contexts, Claude will handle retrieval automatically without needing RLM.
+
 ---
 
 ## CRM Database
