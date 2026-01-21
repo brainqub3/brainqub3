@@ -11,6 +11,9 @@
 # Use: git update-index --skip-worktree ME.MD BUSINESS.MD
 # to keep your personal changes local
 
+# Proposals (client-sensitive)
+proposals/
+
 # Environment files (keep .env.example)
 .env
 .env.*
