@@ -55,30 +55,46 @@ You have access to:
 - /rlm skill for long-context retrieval over local files (use for meetings, CRM, kb, etc.)
 - /kb-update skill for writing to the knowledge base (use when persisting durable knowledge)
 - rlm-subcall sub-agent for extracting relevant info from long contexts
+
+### When to use /rlm directly
+Use the /rlm skill yourself (as the root agent) when you need to:
+- Understand long, complex, or unstructured data (meeting notes, email threads, documents)
+- Search across multiple files for patterns or answers
+- Get context before deciding on next steps
+
+### When to hand off to rlm-subcall
+Hand off to the rlm-subcall sub-agent when you need to:
+- Go deeper into a specific chunk of context
+- Extract precise, structured information from a long document
+- Run focused queries on already-retrieved content
+
+**Rule of thumb**: Use /rlm for breadth (searching across data), hand off to rlm-subcall for depth (extracting from a known context).
+
 - Sub-agents:
   - External research agent: agents/external-research.md
   - **Calendar fetch agent: agents/calendar-fetch.md** (MANDATORY for all calendar fetches)
   - **CRM lead retriever agent: crm-lead-retriever** (use to fetch/sync leads from external CRM)
+  - **Meeting research agent: agents/meeting-research.md** (MANDATORY for all meeting queries)
 
 Use sub-agents when:
 - the user asks about current events, market updates, competitors, pricing, or anything requiring freshness
 - **the user asks to fetch, sync, or update calendar data** → ALWAYS use the calendar-fetch agent
 - **the user asks to fetch, sync, or import leads from CRM** → use the crm-lead-retriever agent
-
-For meeting recall, follow-ups, patterns across calls, or relationship context, use /rlm directly with the appropriate scope (meetings, crm, kb).
+- **the user asks about meetings, meeting recall, follow-ups, patterns across calls, or relationship context** → ALWAYS use the meeting-research agent (which uses /rlm with the meetings scope)
 
 ## Default query workflow
 
 For every user query:
 1) Classify intent:
-   - meeting recall / relationship context
+   - meeting recall / relationship context → **hand off to meeting-research agent**
    - CRM lead or customer lookup
    - business offering / positioning / pricing / proposals
    - personal context (ME.MD)
-   - calendar / scheduling context
-   - external research (needs web)
+   - calendar / scheduling context → **hand off to calendar-fetch agent**
+   - external research (needs web) → **hand off to external-research agent**
 2) Choose sources and run retrieval:
-   - Use /rlm with the smallest relevant scope first (meetings, crm, business, me, calendar, youtube, kb)
+   - For meeting queries: ALWAYS use meeting-research agent (uses /rlm with meetings scope)
+   - For other queries: use /rlm with the smallest relevant scope first (crm, business, me, youtube, kb)
    - Expand to broader scopes only if needed
 3) Synthesis:
    - Combine results into a direct answer
